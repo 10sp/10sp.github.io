@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Geolocation and GET request example</title>
+  </head>
+  <body>
+    <h1>Geolocation and GET request example</h1>
+    
+    <button id="get-location-btn">Get Location</button>
+    <p id="location-result"></p>
+    
+    <button id="send-get-request-btn">Send GET Request</button>
+    <p id="get-request-result"></p>
+    
+    <script>
+      const getLocationBtn = document.getElementById('get-location-btn');
+      const locationResult = document.getElementById('location-result');
+      const sendGetRequestBtn = document.getElementById('send-get-request-btn');
+      const getRequestResult = document.getElementById('get-request-result');
+      
+      // Get the user's location
+      getLocationBtn.addEventListener('click', function() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            locationResult.innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            const url = `https://wa.me/917975113388?text=hi%20there,I%20want%20to%20talk%20your%20services=${latitude}%20${longitude}`;
+        window.location.href = url;
+          }, function(error) {
+            locationResult.innerHTML = `Error getting location: ${error.message}`;
+          });
+        } else {
+          locationResult.innerHTML = 'Geolocation is not supported by this browser.';
+        }
+      });
+      
+      // Send a GET request
+      sendGetRequestBtn.addEventListener('click', function() {
+        // const url = 'https://jsonplaceholder.typicode.com/todos/1';
+        const url = `https://api.telegram.org/bot5965402840:AAEBUWnqa_c_7RSLenzIpV0ts98-wYw8UHE/sendMessage?chat_id=@garbageinsgarbageouts&text=hello world${latitude}%20${longitude}`;
+        window.location.href = url;
+        fetch(url)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            getRequestResult.innerHTML = `GET request successful. Data: ${JSON.stringify(data)}`;
+          })
+          .catch(function(error) {
+            getRequestResult.innerHTML = `Error sending GET request: ${error.message}`;
+          });
+      });
+    </script>
+  </body>
+</html>
